@@ -1,0 +1,18 @@
+body {
+    margin: 0;
+    padding: 16px;
+}
+
+#editor {
+    height: 55vh;
+    min-width: 600px;
+}
+
+.cm-editor {
+    height: 100%;
+}
+
+#terminal {
+    height: 250px;
+    margin-top: 16px;
+}

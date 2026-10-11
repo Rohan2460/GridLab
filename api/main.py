@@ -3,10 +3,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from pathlib import Path
-from api.db.session import Session
-from api.models import *
+from .models import *
 from sqlalchemy import select
-from api.schemas import CourseResponse
+from .routers import course
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -17,12 +16,7 @@ app.mount("/static", StaticFiles(directory= BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory= BASE_DIR / "templates")
 
 
-@app.get("/", response_model=list[CourseResponse])
-def list_courses():
-    with Session() as db:
-        courses = db.scalars(select(Course)).all()
-        return courses
-
+app.include_router(course.router, prefix="/courses")
 
 
 @app.get("/editor")

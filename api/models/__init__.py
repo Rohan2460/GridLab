@@ -4,7 +4,8 @@ from api.models.Model import (
     Activity,
     Submission,
     Course,
-    CourseMembership
+    CourseMembership,
+    Workspace
 )
 from api.models.enums import (
     UserRole,
@@ -23,5 +24,6 @@ __all__ = [
     "UserRole",
     "CourseStatus",
     "ActivityType",
-    "SubmissionStatus"
+    "SubmissionStatus",
+    "Workspace"
 ]

@@ -116,7 +116,23 @@ class Submission(Base):
     activity: Mapped["Activity"] = relationship(back_populates="submissions")
     user: Mapped["User"] = relationship(back_populates="submissions")
 
-    
+
+class Workspace(Base):
+    __tablename__ = "workspace"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    activity_id: Mapped[int] = mapped_column(
+        ForeignKey("activity.id", ondelete="SET NULL")
+    )
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("user.id", ondelete="CASCADE"),
+        nullable=False
+    )
+    status: Mapped[SubmissionStatus] = mapped_column(
+        enum_column(SubmissionStatus, "submission_status"),
+        nullable=False
+    )
+    path:Mapped[str] = mapped_column(String(20), nullable=False)
 
 
 

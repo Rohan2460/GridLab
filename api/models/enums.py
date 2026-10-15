@@ -20,6 +20,7 @@ class ActivityType(str, Enum):
 
 
 class SubmissionStatus(str, Enum):
+    DRAFT = "draft"
     PENDING = "pending"
     APPROVED = "approved"
     REJECTED = "rejected"

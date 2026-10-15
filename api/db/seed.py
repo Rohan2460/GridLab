@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from api.db.session import Session
+from api.db.session import SessionLocal as Session
 from api.models import (
     User,
     Course,

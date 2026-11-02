@@ -1,50 +1,146 @@
-
-.app {
-    height: 100vh;
-
-    display: grid;
-    grid-template-rows: 50px minmax(0, 1fr) 25px;
+.workspace {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 61px);
+    min-height: 580px;
 }
 
-/* Header */
+.workspace-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+}
 
-.header {
+.workspace-header-main {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.workspace-back {
+    color: var(--text-muted);
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.workspace-back:hover {
+    color: var(--primary);
+}
+
+.workspace-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.workspace-title-row h1 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.workspace-description {
+    max-width: 680px;
+    overflow: hidden;
+    color: var(--text-muted);
+    font-size: 12.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workspace-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.select.workspace-language {
+    width: auto;
+    min-width: 124px;
+    min-height: 38px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.workspace-notice {
     display: flex;
     align-items: center;
-
-    padding: 0 20px;
-
-
-    font-weight: bold;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 12px 24px 0;
+    padding: 10px 14px;
+    border: 1px solid #bfe3cd;
+    border-radius: 8px;
+    background: var(--success-soft);
+    color: var(--success);
+    font-size: 13px;
+    font-weight: 600;
 }
 
-/* Main workspace */
-
-.workspace {
-    display: grid;
-
-    grid-template-rows:
-        minmax(0, 1fr)
-        220px;
-
-    min-height: 0;
+.notice-dismiss {
+    border: none;
+    background: transparent;
+    color: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1;
 }
 
-/* Editor */
-
-.editor-panel {
+.workspace-body {
     display: grid;
-
-    grid-template-rows: 35px minmax(0, 1fr);
-
+    flex: 1;
+    grid-template-rows: minmax(0, 1fr) 230px;
+    gap: 14px;
     min-height: 0;
+    padding: 16px 24px;
+}
+
+.code-panel {
+    display: grid;
+    grid-template-rows: 34px minmax(0, 1fr);
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    background: #0f172a;
 }
 
 .panel-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     padding: 0 12px;
-    font-size: 13px;
+    border-bottom: 1px solid #1e293b;
+    background: #111827;
+    color: #cbd5e1;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.panel-meta {
+    color: #64748b;
+    font-size: 11.5px;
+    font-weight: 500;
+}
+
+.panel-action {
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.panel-action:hover {
+    color: #e2e8f0;
 }
 
 .editor-container {
@@ -57,37 +153,67 @@
     font-size: 14px;
 }
 
-/* Terminal */
-
-.terminal-panel {
-    display: grid;
-
-    grid-template-rows: 35px minmax(0, 1fr);
-
-    min-height: 0;
-    border-top: 1px solid #374151;
-}
-
 .terminal-container {
     min-height: 0;
     overflow: hidden;
-    padding: 10px;
+    padding: 8px 12px;
+    background: #0f172a;
 }
 
 .terminal-container .xterm {
     height: 100%;
 }
 
-/* Footer */
-
-.footer {
+.workspace-footer {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 24px 14px;
+    color: var(--text-muted);
+    font-size: 11.5px;
+}
 
-    padding: 0 12px;
+@media (max-width: 860px) {
+    .workspace {
+        height: auto;
+        min-height: calc(100vh - 61px);
+    }
 
-    background: #919191;
+    .workspace-header {
+        flex-direction: column;
+        padding: 14px 16px;
+    }
 
-    font-size: 11px;
+    .workspace-actions {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .workspace-description {
+        white-space: normal;
+    }
+
+    .workspace-body {
+        grid-template-rows: minmax(400px, 58vh) 220px;
+        padding: 12px 16px;
+    }
+
+    .workspace-footer {
+        padding: 8px 16px 14px;
+    }
+
+    .workspace-notice {
+        margin: 12px 16px 0;
+    }
+}
+
+@media (max-width: 520px) {
+    .workspace-actions .btn {
+        flex: 1;
+    }
+
+    .select.workspace-language {
+        width: 100%;
+    }
 }

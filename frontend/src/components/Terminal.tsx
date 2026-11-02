@@ -1,57 +1,75 @@
-import { useEffect, useRef } from "react";
+import {
+    forwardRef,
+    useEffect,
+    useImperativeHandle,
+    useRef,
+} from "react";
 import { Terminal as XTerm } from "@xterm/xterm";
 import "@xterm/xterm/css/xterm.css";
 
-export default function Terminal() {
+export interface TerminalHandle {
+    write: (data: string) => void;
+    writeLine: (line?: string) => void;
+    clear: () => void;
+}
 
-    // Reference to the HTML element
-    const terminalRef = useRef<HTMLDivElement>(null);
+const Terminal = forwardRef<TerminalHandle>(function Terminal(_, ref) {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const terminalRef = useRef<XTerm | null>(null);
+
+    useImperativeHandle(
+        ref,
+        () => ({
+            write: (data: string) => terminalRef.current?.write(data),
+            writeLine: (line = "") => terminalRef.current?.writeln(line),
+            clear: () => terminalRef.current?.reset(),
+        }),
+        [],
+    );
 
     useEffect(() => {
+        if (!containerRef.current) {
+            return;
+        }
 
-        if (!terminalRef.current) return;
-
-        // Create terminal
         const terminal = new XTerm({
             cursorBlink: true,
-            fontSize: 14,
+            fontSize: 13,
+            fontFamily:
+                "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
             theme: {
-                background: "#111827",
-                foreground: "#E5E7EB"
-            }
+                background: "#0f172a",
+                foreground: "#e2e8f0",
+                cursor: "#93c5fd",
+                selectionBackground: "#334155",
+            },
         });
 
-        // Attach terminal to the HTML element
-        terminal.open(terminalRef.current);
+        terminal.open(containerRef.current);
+        terminalRef.current = terminal;
 
-        // Display some initial text
         terminal.writeln("Welcome to GridLab!");
+        terminal.writeln("Connected to sandbox workspace.");
         terminal.write("$ ");
 
-        // Receive keyboard input
         const input = terminal.onData((data) => {
-
             if (data === "\r") {
                 terminal.write("\r\n$ ");
-            }
-            else if (data === "\u007f") {
+            } else if (data === "\u007f") {
                 terminal.write("\b \b");
-            }
-            else {
+            } else {
                 terminal.write(data);
             }
-
         });
 
-        // Cleanup
         return () => {
             input.dispose();
             terminal.dispose();
+            terminalRef.current = null;
         };
-
     }, []);
 
-    return (
-        <div ref={terminalRef} className="terminal-container" />
-    );
-}
+    return <div ref={containerRef} className="terminal-container" />;
+});
+
+export default Terminal;

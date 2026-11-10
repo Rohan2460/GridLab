@@ -1,7 +1,7 @@
 from typing import List
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.orm import DeclarativeBase, relationship
-from sqlalchemy import Integer, String, Text, DateTime, Enum as SAEnum
+from sqlalchemy import Boolean, String, Text, DateTime, Enum as SAEnum
 from sqlalchemy import ForeignKey
 from datetime import datetime
 from api.models.enums import UserRole, CourseStatus, ActivityType, SubmissionStatus
@@ -15,6 +15,7 @@ def enum_column(enum_class, name: str):
         values_callable=lambda cls: [item.value for item in cls],
     )
 
+
 class Base(DeclarativeBase):
     pass
 
@@ -24,7 +25,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(20), nullable=False)
-    password_hash: Mapped[str] = mapped_column(String(72), nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String(100), nullable=False)
     full_name: Mapped[str] = mapped_column(String(20))
     email: Mapped[str] = mapped_column(String(20))
     role: Mapped[UserRole] = mapped_column(
@@ -32,6 +33,7 @@ class User(Base):
         nullable=False
     )
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    disabled: Mapped[bool] = mapped_column(Boolean, default=False)
 
     membership: Mapped[List["CourseMembership"]] = relationship(back_populates="user")
     created_activities: Mapped[List["Activity"]] = relationship(back_populates="creator")
@@ -133,8 +135,4 @@ class Workspace(Base):
         nullable=False
     )
     path:Mapped[str] = mapped_column(String(20), nullable=False)
-
-
-
-
 

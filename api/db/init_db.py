@@ -5,7 +5,7 @@ from sqlalchemy import inspect
 
 
 Base.metadata.create_all(engine)
-seed_database()
+# seed_database()
 
 print("Database created.")
 print(inspect(engine).get_table_names())
